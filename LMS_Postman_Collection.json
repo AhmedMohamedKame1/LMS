@@ -1,0 +1,720 @@
+{
+	"info": {
+		"_postman_id": "lms-fawry-collection",
+		"name": "LMS - Fawry (Ahmed Kamel)",
+		"description": "Postman collection for the Fawry LMS microservices project.\n\nAll requests go through the API Gateway on port 8080.\n\n**Test Flow:**\n1. Register an Instructor → Register a Student\n2. Login as Instructor → Create courses\n3. Login as Student → Enroll in courses\n4. View profiles, courses, enrollments\n\n**Auto-token:** Login/Register requests automatically save the JWT token to the `token` collection variable.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "instructorToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "studentToken",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "courseId1",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "courseId2",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "enrollmentId",
+			"value": "1",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Auth",
+			"description": "Authentication endpoints (open — no JWT required)",
+			"item": [
+				{
+					"name": "Register Instructor (Ahmed Kamel)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var json = pm.response.json();",
+									"    if (json.token) {",
+									"        pm.collectionVariables.set('instructorToken', json.token);",
+									"        pm.collectionVariables.set('token', json.token);",
+									"        console.log('Instructor token saved.');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Ahmed Kamel\",\n    \"email\": \"ahmed.kamel@fawry.com\",\n    \"password\": \"P@ssw0rd123\",\n    \"confirmPassword\": \"P@ssw0rd123\",\n    \"role\": \"INSTRUCTOR\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "register"]
+						},
+						"description": "Register Ahmed Kamel as an INSTRUCTOR. The JWT token is auto-saved."
+					},
+					"response": []
+				},
+				{
+					"name": "Register Student (Gemi)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var json = pm.response.json();",
+									"    if (json.token) {",
+									"        pm.collectionVariables.set('studentToken', json.token);",
+									"        pm.collectionVariables.set('token', json.token);",
+									"        console.log('Student token saved.');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Gemi\",\n    \"email\": \"gemi@fawry.com\",\n    \"password\": \"Student@123\",\n    \"confirmPassword\": \"Student@123\",\n    \"role\": \"STUDENT\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "register"]
+						},
+						"description": "Register Gemi as a STUDENT. The JWT token is auto-saved."
+					},
+					"response": []
+				},
+				{
+					"name": "Login as Instructor (Ahmed Kamel)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var json = pm.response.json();",
+									"    if (json.token) {",
+									"        pm.collectionVariables.set('instructorToken', json.token);",
+									"        pm.collectionVariables.set('token', json.token);",
+									"        console.log('Instructor token saved.');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"ahmed.kamel@fawry.com\",\n    \"password\": \"P@ssw0rd123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login as Ahmed Kamel (Instructor). JWT is auto-saved to `instructorToken` and `token`."
+					},
+					"response": []
+				},
+				{
+					"name": "Login as Student (Gemi)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var json = pm.response.json();",
+									"    if (json.token) {",
+									"        pm.collectionVariables.set('studentToken', json.token);",
+									"        pm.collectionVariables.set('token', json.token);",
+									"        console.log('Student token saved.');",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"gemi@fawry.com\",\n    \"password\": \"Student@123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["auth", "login"]
+						},
+						"description": "Login as Gemi (Student). JWT is auto-saved to `studentToken` and `token`."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"description": "User profile endpoints (JWT required)",
+			"item": [
+				{
+					"name": "Get My Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me"]
+						},
+						"description": "Get the profile of the currently logged-in user (uses whichever token is in `token`)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By ID (ID=1)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1"]
+						},
+						"description": "Get a user profile by ID."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Courses (Instructor - Ahmed Kamel)",
+			"description": "Course management endpoints. Use the instructorToken for creating courses.",
+			"item": [
+				{
+					"name": "Create Course - Introduction to Artificial Intelligence",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var json = pm.response.json();",
+									"    if (json.id) {",
+									"        pm.collectionVariables.set('courseId1', json.id.toString());",
+									"        console.log('Course 1 ID saved: ' + json.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{instructorToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Introduction to Artificial Intelligence\",\n    \"description\": \"Explore the foundations of AI including search algorithms, knowledge representation, probabilistic reasoning, and machine learning. Covers both classical AI techniques and modern deep learning approaches with hands-on Python projects.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["courses"]
+						},
+						"description": "Create an AI fundamentals course. Course ID is auto-saved to `courseId1`."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course - Data Structures & Algorithms",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var json = pm.response.json();",
+									"    if (json.id) {",
+									"        pm.collectionVariables.set('courseId2', json.id.toString());",
+									"        console.log('Course 2 ID saved: ' + json.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{instructorToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Data Structures & Algorithms\",\n    \"description\": \"Master core computer science data structures (arrays, linked lists, trees, graphs, hash tables) and algorithms (sorting, searching, dynamic programming, greedy methods). Includes competitive programming practice and Big-O complexity analysis.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["courses"]
+						},
+						"description": "Create a DSA course. Course ID is auto-saved to `courseId2`."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course - Machine Learning Engineering",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{instructorToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Machine Learning Engineering\",\n    \"description\": \"End-to-end machine learning pipeline: data preprocessing, feature engineering, model training (regression, classification, clustering), hyperparameter tuning, and deployment with MLflow and Docker. Uses scikit-learn, TensorFlow, and real-world datasets.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["courses"]
+						},
+						"description": "Create an ML Engineering course."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course - Computer Networks & Cloud Computing",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{instructorToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Computer Networks & Cloud Computing\",\n    \"description\": \"Study the OSI model, TCP/IP, HTTP, DNS, load balancing, and network security. Then dive into cloud computing with AWS/GCP — covering EC2, S3, Lambda, Kubernetes, and infrastructure as code with Terraform.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["courses"]
+						},
+						"description": "Create a Networks & Cloud course."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Course - Natural Language Processing",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{instructorToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Natural Language Processing with Transformers\",\n    \"description\": \"Deep dive into NLP: tokenization, word embeddings, RNNs, attention mechanisms, and the Transformer architecture. Build projects using Hugging Face Transformers including text classification, named entity recognition, and chatbot development.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["courses"]
+						},
+						"description": "Create an NLP with Transformers course."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Courses",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["courses"]
+						},
+						"description": "List all available courses."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Course By ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/courses/{{courseId1}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["courses", "{{courseId1}}"]
+						},
+						"description": "Get details of the AI course by its ID."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Enrollments (Student - Gemi)",
+			"description": "Enrollment endpoints. Use the studentToken for student actions and instructorToken for instructor-only views.",
+			"item": [
+				{
+					"name": "Enroll in AI Course",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var json = pm.response.json();",
+									"    if (json.id) {",
+									"        pm.collectionVariables.set('enrollmentId', json.id.toString());",
+									"        console.log('Enrollment ID saved: ' + json.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": {{courseId1}}\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/enrollments",
+							"host": ["{{baseUrl}}"],
+							"path": ["enrollments"]
+						},
+						"description": "Enroll Gemi (student) in the AI course. Enrollment ID is auto-saved."
+					},
+					"response": []
+				},
+				{
+					"name": "Enroll in DSA Course",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": {{courseId2}}\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/enrollments",
+							"host": ["{{baseUrl}}"],
+							"path": ["enrollments"]
+						},
+						"description": "Enroll Gemi (student) in the DSA course."
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Enrolled Courses (Student)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/enrollments/my-courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["enrollments", "my-courses"]
+						},
+						"description": "Get all courses Gemi is enrolled in."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Students for Course (Instructor only)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{instructorToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/enrollments/course/{{courseId1}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["enrollments", "course", "{{courseId1}}"]
+						},
+						"description": "View all students enrolled in the AI course (instructor-only)."
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel Enrollment",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/enrollments/{{enrollmentId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["enrollments", "{{enrollmentId}}"]
+						},
+						"description": "Cancel Gemi's enrollment by enrollment ID."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error Scenarios",
+			"description": "Requests that should fail — useful for validating authorization, role checks, and edge cases.",
+			"item": [
+				{
+					"name": "Access without token (should 401)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["courses"]
+						},
+						"description": "Attempt to access a protected endpoint without a JWT. Should return 401 Unauthorized."
+					},
+					"response": []
+				},
+				{
+					"name": "Student tries to create course (should fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Unauthorized Course\",\n    \"description\": \"This should fail because students cannot create courses.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/courses",
+							"host": ["{{baseUrl}}"],
+							"path": ["courses"]
+						},
+						"description": "A student should not be allowed to create a course. Expect an error response."
+					},
+					"response": []
+				},
+				{
+					"name": "Instructor tries to enroll (should fail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{instructorToken}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"courseId\": {{courseId1}}\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/enrollments",
+							"host": ["{{baseUrl}}"],
+							"path": ["enrollments"]
+						},
+						"description": "An instructor should not be allowed to enroll in a course. Expect a 'Only students can enroll' error."
+					},
+					"response": []
+				},
+				{
+					"name": "Student views enrolled students (should fail)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{studentToken}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/enrollments/course/{{courseId1}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["enrollments", "course", "{{courseId1}}"]
+						},
+						"description": "A student should not be able to view enrolled students for a course. Expect a 'Only instructors can view enrolled students' error."
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid token (should 401)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.invalid.token"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/users/me",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "me"]
+						},
+						"description": "Attempt to access a protected endpoint with a garbage JWT. Should return 401."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
